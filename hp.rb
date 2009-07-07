@@ -3,7 +3,9 @@ require 'hpricot'
 require 'open-uri'
 
 base = "http://sy11.kaixindao.org/shuyao/html/dushi/2009/0314/"
-index_page = "403.html"
+index_page = "417.html"
+base = "http://sy11.kaixindao.org/shuyao/html/dushi/2009/0703/"
+index_page = "4265.html"
 doc = Hpricot(open(base + index_page))
 
 pages = []
