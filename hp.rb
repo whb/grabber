@@ -35,7 +35,6 @@ for page in pages
   threads << Thread.new(base+page) { |t_page|
     num = t_page[/_(\d*)\.html/, 1]
     num = 1 if num.nil?
-    puts num
     puts "Fetching: #{t_page}"
     #doc = Hpricot(open(t_page))
     #lines = doc.search('.news').inner_html.split('<br />')
@@ -46,10 +45,7 @@ for page in pages
 end
 threads.each {|thread| thread.join}
 context_array = context.sort
-context_array.each { |i| puts i[1]}
-#puts context_array
-
-
-#pages.each {|page| abstract(base+page)}
-
+File.open("one", "w") do |f|
+  context_array.each { |i| puts f.puts i[1]}
+end
 
