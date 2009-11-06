@@ -9,7 +9,7 @@ def grabber(dir, index, num)
     threads << Thread.new(no) { |i|
       page = (i == 1 ? "#{index}.html":"#{index}_#{i}.html")
       doc = Hpricot(open(dir+page))
-      lines = doc.search('.news').inner_html.split('<br />')
+      lines = doc.search('.wen').inner_html.split(%r{<br\s*/*>})
       chapters[i-1] = lines
     }
   end
@@ -23,18 +23,14 @@ def list(dir)
   title = {}
   doc = Hpricot(open(dir))
   doc.search('a') do |link|
-    frag = link.inner_html[0,4].to_i
-    if frag !=0 then
-      if !title.has_key?(frag)
-        title[frag] = 1
-      else
-        title[frag] = title[frag] + 1
-      end
-    end
+    frag = link.inner_html[/(\d+)(_*)(\d*)/,1].to_i
+    next if frag == 0
+		title[frag] ||= 0
+		title[frag] += 1
   end
   title.each do |key, value| 
     puts "grabbering: #{key} => #{value}"
-    grabber(dir, key, value)
+    #grabber(dir, key, value)
   end
 end
 
